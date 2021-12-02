@@ -1,5 +1,15 @@
 export interface IPlayerScoreBox{
-    firstShot: number;
+    firstShot?: number;
     secondShot?: number;
-    score: number;
+    thirdShot?: number;
+    score?: number;
+    isFinished: boolean;
+    isSpare: boolean;
+    isStrike: boolean;
+}
+
+export enum BonusType{
+    STRIKE,
+    SPARE,
+    REGULAR
 }

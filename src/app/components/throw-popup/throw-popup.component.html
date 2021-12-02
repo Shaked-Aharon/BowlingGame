@@ -3,6 +3,6 @@
     <h4>Number of pins</h4>
     <div class="throw-input">
         <input [formControl]="pinsInput" type="number">
-        <button (click)="throw()">Throw</button>
+        <button [disabled]="!pinsInput.valid" (click)="throw()">Throw</button>
     </div>
 </div>

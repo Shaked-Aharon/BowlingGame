@@ -1,4 +1,6 @@
 .score-board {
+    max-width: 900px;
+    max-height: 140px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: 140px;
@@ -13,6 +15,24 @@
 
             div {
                 flex: 30%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.3rem;
+
+                &.black {
+                    background-color: black;
+                }
+
+                &.half-black {
+                    background: rgb(2, 0, 36);
+                    background: linear-gradient(
+                        308deg,
+                        rgba(2, 0, 36, 1) 51%,
+                        rgba(255, 255, 255, 0.774) 51%,
+                        rgba(255, 255, 255, 0.774) 51%
+                    );
+                }
             }
 
             div:not(:first-of-type) {

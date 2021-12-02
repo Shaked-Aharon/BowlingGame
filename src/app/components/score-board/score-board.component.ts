@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BowlingService } from 'src/app/services/bowling.service';
 
 @Component({
   selector: 'app-score-board',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoreBoardComponent implements OnInit {
 
-  constructor() { }
+  playerScore$ = this.bowlingService.playerScore$;
+
+  constructor(
+    private bowlingService: BowlingService
+  ) { }
 
   ngOnInit(): void {
   }
