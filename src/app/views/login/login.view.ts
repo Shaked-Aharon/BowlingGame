@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { BowlingService } from 'src/app/services/bowling.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.view.html',
-  styleUrls: ['./login.view.sass']
+  styleUrls: ['./login.view.scss']
 })
-export class LoginView implements OnInit {
+export class LoginView {
 
-  constructor() { }
+  playerNameInput = new FormControl('', [Validators.required, Validators.minLength(3), Validators.pattern('^[a-zA-Z]+$')]);
+  constructor(
+    private bowlingService: BowlingService
+  ) { }
 
-  ngOnInit(): void {
+  startGame(): void {
+    this.bowlingService.startGame(this.playerNameInput.value);
   }
 
 }

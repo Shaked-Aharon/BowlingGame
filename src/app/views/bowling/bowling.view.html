@@ -1,1 +1,4 @@
-<p>bowling works!</p>
+<app-score-board></app-score-board>
+<button (click)="throw()">Throw</button>
+
+<app-throw-popup *ngIf="isThrowing" (throwEnd)="isThrowing = false"></app-throw-popup>

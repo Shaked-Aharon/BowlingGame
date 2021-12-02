@@ -1,1 +1,13 @@
-<p>login works!</p>
+<div class="flex">
+    <div class="image"></div>
+    <div class="login-form">
+        <div>
+            <h3>Bowling</h3>
+            <label for="name">
+                <input class="regular" [formControl]="playerNameInput" type="text" placeholder="Name">
+                <span>Name</span>
+            </label>
+            <button [disabled]="!playerNameInput.valid" (click)="startGame()">Start Game</button>
+        </div>
+    </div>
+</div>

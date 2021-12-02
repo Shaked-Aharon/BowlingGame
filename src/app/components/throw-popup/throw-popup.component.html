@@ -1,0 +1,8 @@
+<div>
+    <button class="close" (click)="close()">X</button>
+    <h4>Number of pins</h4>
+    <div class="throw-input">
+        <input [formControl]="pinsInput" type="number">
+        <button (click)="throw()">Throw</button>
+    </div>
+</div>

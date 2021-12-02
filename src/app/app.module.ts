@@ -5,14 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginView } from './views/login/login.view';
 import { BowlingView } from './views/bowling/bowling.view';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ScoreBoardComponent } from './components/score-board/score-board.component';
+import { ThrowPopupComponent } from './components/throw-popup/throw-popup.component';
 
 @NgModule({
   declarations: [
     LoginView,
     BowlingView,
-    AppComponent
+    AppComponent,
+    ScoreBoardComponent,
+    ThrowPopupComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule
   ],

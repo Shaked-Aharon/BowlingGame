@@ -1,0 +1,44 @@
+.flex {
+    height: 100%;
+    display: flex;
+    background-image: url("../../../assets/images/bowling-side.jpg");
+
+    .login-form {
+        flex: 40%;
+        background-color: rgba(219, 241, 241, 0.701);
+        position: relative;
+
+        div {
+            display: flex;
+            height: 250px;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            button{
+                border: none;
+                background-color: rgb(53, 165, 49);
+                padding: 8px 16px;
+                border-radius: 7px;
+                color: white;
+                cursor: pointer;
+
+                &:disabled{
+                    cursor: none;
+                    background-color: rgb(119, 129, 119);
+                }
+            }
+        }
+    }
+
+    .image {
+        flex: 60%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: 0.8;
+    }
+}
