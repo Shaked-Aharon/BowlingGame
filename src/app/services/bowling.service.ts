@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { BonusType, IPlayerScoreBox } from '../interfaces';
@@ -8,8 +8,9 @@ import { BonusType, IPlayerScoreBox } from '../interfaces';
 })
 export class BowlingService {
 
+  gameFinish: EventEmitter<void> = new EventEmitter();
   playerName$ = new BehaviorSubject<string>(localStorage.getItem('playerName') || '');
-  playerScore$ = new BehaviorSubject<IPlayerScoreBox[]>(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false }));
+  playerScore$ = new BehaviorSubject<IPlayerScoreBox[]>(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => {return {...v, index: i}}));
   constructor(
     private router: Router
   ) { }
@@ -24,17 +25,27 @@ export class BowlingService {
     const scoreBoxIndex = this.playerScore$.value.findIndex(sB => !sB.isFinished);
     if (scoreBoxIndex === -1) { return; }
     let scoreBox = { ...this.playerScore$.value[scoreBoxIndex] };
-    const newPlayerScore = [...this.playerScore$.value];
+    let newPlayerScore = [...this.playerScore$.value];
     scoreBox = this.addThrowToBox(scoreBox, throwScore, scoreBoxIndex === 9);
+    scoreBox = this.checkForStrikeOrSpare(scoreBox);
     scoreBox = this.checkIfBoxFinished(scoreBox, scoreBoxIndex === 9);
     newPlayerScore[scoreBoxIndex] = scoreBox;
-    this.calculateScore(newPlayerScore);
+    newPlayerScore = this.calculateScore(newPlayerScore);
+    if (newPlayerScore.findIndex(sB => !sB.isFinished) === -1) {
+      this.gameFinish.emit();
+    }
+    this.playerScore$.next(newPlayerScore);
   }
 
   addThrowToBox(scoreBox: IPlayerScoreBox, throwScore: number, isLastBox: boolean): IPlayerScoreBox {
+    console.log(scoreBox);
     if (!scoreBox.firstShot) { scoreBox.firstShot = throwScore; }
     else if (scoreBox.firstShot !== 10 && !scoreBox.secondShot) { scoreBox.secondShot = throwScore; }
-    else if (isLastBox && !scoreBox.thirdShot && !!scoreBox.firstShot && !!scoreBox.secondShot) { scoreBox.thirdShot = throwScore; }
+    else if (isLastBox && !scoreBox.thirdShot && (scoreBox.isStrike || scoreBox.isSpare || !!scoreBox.firstShot && !!scoreBox.secondShot)) { scoreBox.thirdShot = throwScore; }
+    return scoreBox;
+  }
+
+  checkForStrikeOrSpare(scoreBox: IPlayerScoreBox): IPlayerScoreBox {
     if (scoreBox.firstShot === 10) { scoreBox.isStrike = true; }
     else if ((scoreBox.firstShot || 0) + (scoreBox.secondShot || 0) === 10) { scoreBox.isSpare = true; }
     return scoreBox;
@@ -55,12 +66,16 @@ export class BowlingService {
         if (bonusType !== BonusType.REGULAR && i !== 0 && scores[i - 1].isFinished && (scores[i - 1].isSpare || scores[i - 1].isStrike)) {
           box.score += bonusType === BonusType.SPARE ? box.firstShot! : (box.firstShot || 0) + (box.secondShot || 0);
         }
-        box.score += (box.thirdShot || 0);
+        box.score += box.isSpare || box.isStrike ? (box.thirdShot || 0) * 2 : (box.thirdShot || 0);
         totalScore = box.score;
 
         bonusType = box.firstShot === 10 ? BonusType.STRIKE : (box.firstShot! + (box.secondShot || 0) === 10 ? BonusType.SPARE : BonusType.REGULAR);
       }
     }
-    this.playerScore$.next(scores);
+    return scores;
+  }
+
+  restart() {
+    this.playerScore$.next(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => {return {...v, index: i}}));
   }
 }

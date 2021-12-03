@@ -9,11 +9,14 @@ import { BowlingService } from 'src/app/services/bowling.service';
 })
 export class BowlingView implements OnInit {
   isThrowing = false;
-
+  gameFinish = false;
   constructor(
     private router: Router,
     private bowlingService: BowlingService
   ) {
+    this.bowlingService.gameFinish.subscribe(_ => {
+      this.gameFinish = true;
+    });
   }
 
   ngOnInit(): void {
@@ -22,8 +25,10 @@ export class BowlingView implements OnInit {
     }
   }
 
-  throw() {
-    this.isThrowing = true;
+  restart() {
+    this.isThrowing = false;
+    this.gameFinish = false;
+    this.bowlingService.restart();
   }
 
 

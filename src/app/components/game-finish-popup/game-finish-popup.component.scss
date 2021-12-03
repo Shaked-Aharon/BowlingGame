@@ -1,0 +1,33 @@
+:host{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    .container{
+        width: 50%;
+        height: 26.5%;
+        border: 2px solid black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(65, 129, 74);
+
+        h2{
+            text-align: center;
+        }
+
+        button{
+            display: block;
+            border: none;
+            padding: 8px 16px;
+            margin: auto;
+            border-radius: 7px;
+        }
+    }
+}

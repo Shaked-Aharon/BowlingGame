@@ -17,7 +17,8 @@ export class ThrowPopupComponent implements OnInit {
 
   ngOnInit(){
     const currentBox = this.bowlingService.playerScore$.value.find(sB => !sB.isFinished);
-    const isThirdShot = !!currentBox?.firstShot && !!currentBox?.secondShot && !currentBox.isFinished;
+    // const isThirdShot = !!currentBox?.firstShot && !!currentBox?.secondShot && !currentBox.isFinished;
+    const isThirdShot = currentBox?.index === 9 && (currentBox.isSpare || currentBox.isStrike);
     const maxPotenialThrowScore = isThirdShot ? 10 : 10 - (currentBox?.firstShot || 0);
     this.pinsInput.setValidators([Validators.required, Validators.min(0), Validators.max(maxPotenialThrowScore)])
   }

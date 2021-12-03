@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScoreBoardComponent } from './components/score-board/score-board.component';
 import { ThrowPopupComponent } from './components/throw-popup/throw-popup.component';
+import { GameFinishPopupComponent } from './components/game-finish-popup/game-finish-popup.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ThrowPopupComponent } from './components/throw-popup/throw-popup.compon
     BowlingView,
     AppComponent,
     ScoreBoardComponent,
-    ThrowPopupComponent
+    ThrowPopupComponent,
+    GameFinishPopupComponent
   ],
   imports: [
     ReactiveFormsModule,

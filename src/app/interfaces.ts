@@ -6,6 +6,7 @@ export interface IPlayerScoreBox{
     isFinished: boolean;
     isSpare: boolean;
     isStrike: boolean;
+    index: number;
 }
 
 export enum BonusType{

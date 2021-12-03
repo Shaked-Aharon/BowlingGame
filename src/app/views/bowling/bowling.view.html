@@ -1,4 +1,5 @@
 <app-score-board></app-score-board>
-<button class="ball" (click)="throw()">Throw</button>
+<button [disabled]="gameFinish" class="ball" (click)="isThrowing = true">Throw</button>
 
 <app-throw-popup *ngIf="isThrowing" (throwEnd)="isThrowing = false"></app-throw-popup>
+<app-game-finish-popup *ngIf="gameFinish" (restart)="restart()"></app-game-finish-popup>
