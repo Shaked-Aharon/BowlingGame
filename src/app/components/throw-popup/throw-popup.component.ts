@@ -8,7 +8,7 @@ import { BowlingService } from 'src/app/services/bowling.service';
   styleUrls: ['./throw-popup.component.scss']
 })
 export class ThrowPopupComponent implements OnInit {
-  pinsInput = new FormControl(5, [])
+  pinsInput = new FormControl(10, [])
   @Output() throwEnd: EventEmitter<void> = new EventEmitter();
 
   constructor(
@@ -16,7 +16,9 @@ export class ThrowPopupComponent implements OnInit {
   ) { }
 
   ngOnInit(){
-    const maxPotenialThrowScore = 10 - (this.bowlingService.playerScore$.value.find(sB => !sB.isFinished)?.firstShot || 0);
+    const currentBox = this.bowlingService.playerScore$.value.find(sB => !sB.isFinished);
+    const isThirdShot = !!currentBox?.firstShot && !!currentBox?.secondShot && !currentBox.isFinished;
+    const maxPotenialThrowScore = isThirdShot ? 10 : 10 - (currentBox?.firstShot || 0);
     this.pinsInput.setValidators([Validators.required, Validators.min(0), Validators.max(maxPotenialThrowScore)])
   }
   throw(){

@@ -3,7 +3,7 @@
         <div class="first-line">
             <div class="first-throw">{{score.isStrike ? '' : score.firstShot}}</div>
             <div class="second-throw" [ngClass]="{'black': score.isStrike, 'half-black': score.isSpare}">{{score.isSpare ? '' :score.secondShot}}</div>
-            <div *ngIf="score.thirdShot" class="third-throw">{{score.thirdShot}}</div>
+            <div *ngIf="score.thirdShot" class="third-throw" [ngClass]="{'black': score.thirdShot === 10}">{{score.thirdShot}}</div>
         </div>
         <div class="second-line">
             <h2>{{score.score}}</h2>

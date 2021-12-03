@@ -1,4 +1,16 @@
 :host{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.container{
+    
     box-sizing: border-box;
     position: absolute;
     width: 200px;
