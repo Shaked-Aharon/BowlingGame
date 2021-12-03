@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var BonusType = /*#__PURE__*/(() => {\n  (function (BonusType) {\n    BonusType[BonusType[\"STRIKE\"] = 0] = \"STRIKE\";\n    BonusType[BonusType[\"SPARE\"] = 1] = \"SPARE\";\n    BonusType[BonusType[\"REGULAR\"] = 2] = \"REGULAR\";\n  })(BonusType || (BonusType = {}));\n\n  return BonusType;\n})();","map":null,"metadata":{},"sourceType":"module"}
