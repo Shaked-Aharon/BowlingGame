@@ -34,6 +34,7 @@ span{
 
 label:focus-within > span,
 input.regular:not(:placeholder-shown) + span{
-    color:purple;
-    transform:translateY(17px);
+    transform: translateY(0px);
+    font-weight: bold;
+    font-size: large;
 }

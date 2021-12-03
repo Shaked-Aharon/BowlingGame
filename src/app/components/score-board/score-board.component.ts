@@ -7,7 +7,7 @@ import { BowlingService } from 'src/app/services/bowling.service';
   styleUrls: ['./score-board.component.scss']
 })
 export class ScoreBoardComponent implements OnInit {
-
+  playerName$ = this.bowlingService.playerName$;
   playerScore$ = this.bowlingService.playerScore$;
 
   constructor(

@@ -4,13 +4,13 @@ import { BowlingView } from './views/bowling/bowling.view';
 import { LoginView } from './views/login/login.view';
 
 const routes: Routes = [
-  {path: 'play', component: BowlingView},
-  {path: '', pathMatch: 'full', component: LoginView},
-  {path: '**', redirectTo: '/'}
+  { path: 'play', component: BowlingView },
+  { path: '', pathMatch: 'full', component: LoginView },
+  { path: '**', redirectTo: '/' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

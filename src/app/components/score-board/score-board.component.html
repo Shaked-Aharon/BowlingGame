@@ -1,4 +1,8 @@
 <div class="score-board">
+    <div class="name-box">
+        name:
+        <h2>{{playerName$|async}}</h2>
+    </div>
     <div class="score-box" *ngFor="let score of playerScore$|async">
         <div class="first-line">
             <div class="first-throw">{{score.isStrike ? '' : score.firstShot}}</div>

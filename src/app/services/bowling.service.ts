@@ -10,14 +10,20 @@ export class BowlingService {
 
   gameFinish: EventEmitter<void> = new EventEmitter();
   playerName$ = new BehaviorSubject<string>(localStorage.getItem('playerName') || '');
-  playerScore$ = new BehaviorSubject<IPlayerScoreBox[]>(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => {return {...v, index: i}}));
+  playerScore$ = new BehaviorSubject<IPlayerScoreBox[]>(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => { return { ...v, index: i } }));
   constructor(
     private router: Router
-  ) { }
+  ) {
+    const playerScore = localStorage.getItem('playerScore');
+    if(playerScore){
+      this.playerScore$.next(JSON.parse(playerScore));
+    }
+  }
 
   startGame(name: string): void {
     this.playerName$.next(name);
     localStorage.setItem('playerName', name);
+    this.restart();
     this.router.navigate(['/play']);
   }
 
@@ -34,11 +40,11 @@ export class BowlingService {
     if (newPlayerScore.findIndex(sB => !sB.isFinished) === -1) {
       this.gameFinish.emit();
     }
+    localStorage.setItem('playerScore', JSON.stringify(newPlayerScore));
     this.playerScore$.next(newPlayerScore);
   }
 
   addThrowToBox(scoreBox: IPlayerScoreBox, throwScore: number, isLastBox: boolean): IPlayerScoreBox {
-    console.log(scoreBox);
     if (!scoreBox.firstShot) { scoreBox.firstShot = throwScore; }
     else if (scoreBox.firstShot !== 10 && !scoreBox.secondShot) { scoreBox.secondShot = throwScore; }
     else if (isLastBox && !scoreBox.thirdShot && (scoreBox.isStrike || scoreBox.isSpare || !!scoreBox.firstShot && !!scoreBox.secondShot)) { scoreBox.thirdShot = throwScore; }
@@ -51,8 +57,27 @@ export class BowlingService {
     return scoreBox;
   }
 
+  // checkIfBoxFinished(scoreBox: IPlayerScoreBox, isLastBox: boolean) {
+  //   scoreBox.isFinished = ((scoreBox.isSpare || scoreBox.isStrike) && !isLastBox) 
+  //                       || ((scoreBox.firstShot! > -1) && (scoreBox.secondShot! > -1) && (isLastBox ? scoreBox.thirdShot! > -1 : true))
+  //                       || ((scoreBox.isSpare || scoreBox.isStrike) && scoreBox.thirdShot! > -1 && isLastBox)
+  //                       || (scoreBox.firstShot! > -1) && (scoreBox.secondShot! > -1);
+  //   return scoreBox;
+  // }
   checkIfBoxFinished(scoreBox: IPlayerScoreBox, isLastBox: boolean) {
-    scoreBox.isFinished = ((scoreBox.firstShot || 0) === 10 && !isLastBox) || (scoreBox.firstShot! > -1) && (scoreBox.secondShot! > -1) && (isLastBox ? !!scoreBox.thirdShot : true);
+    if (!isLastBox) {
+      if (scoreBox.isSpare || scoreBox.isStrike) {
+        scoreBox.isFinished = true;
+      } else if ((scoreBox.firstShot! > -1) && (scoreBox.secondShot! > -1)) {
+        scoreBox.isFinished = true;
+      }
+    } else {
+      if (!scoreBox.isSpare && !scoreBox.isStrike && (scoreBox.firstShot! > -1) && (scoreBox.secondShot! > -1)) {
+        scoreBox.isFinished = true;
+      } else if ((scoreBox.isSpare || scoreBox.isStrike) && scoreBox.thirdShot! > -1) {
+        scoreBox.isFinished = true;
+      }
+    }
     return scoreBox;
   }
 
@@ -76,6 +101,7 @@ export class BowlingService {
   }
 
   restart() {
-    this.playerScore$.next(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => {return {...v, index: i}}));
+    this.playerScore$.next(new Array<IPlayerScoreBox>(10).fill({ isFinished: false, isSpare: false, isStrike: false, index: -1 }).map((v, i) => { return { ...v, index: i } }));
+    localStorage.setItem('playerScore', JSON.stringify(this.playerScore$.value));
   }
 }
