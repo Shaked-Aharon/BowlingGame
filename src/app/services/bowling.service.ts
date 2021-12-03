@@ -24,15 +24,9 @@ export class BowlingService {
     const scoreBoxIndex = this.playerScore$.value.findIndex(sB => !sB.isFinished);
     if (scoreBoxIndex === -1) { return; }
     let scoreBox = { ...this.playerScore$.value[scoreBoxIndex] };
-    if (scoreBoxIndex > 0) {
-      scoreBox.score = scoreBox.score || this.playerScore$.value[scoreBoxIndex - 1].score!;
-    } else {
-      scoreBox.score = 0;
-    }
     const newPlayerScore = [...this.playerScore$.value];
     scoreBox = this.addThrowToBox(scoreBox, throwScore, scoreBoxIndex === 9);
-    console.log(scoreBox);
-    scoreBox = this.checkIfBoxFinished(scoreBox, scoreBoxIndex === 9)
+    scoreBox = this.checkIfBoxFinished(scoreBox, scoreBoxIndex === 9);
     newPlayerScore[scoreBoxIndex] = scoreBox;
     this.calculateScore(newPlayerScore);
   }
@@ -61,6 +55,7 @@ export class BowlingService {
         if (bonusType !== BonusType.REGULAR && i !== 0 && scores[i - 1].isFinished && (scores[i - 1].isSpare || scores[i - 1].isStrike)) {
           box.score += bonusType === BonusType.SPARE ? box.firstShot! : (box.firstShot || 0) + (box.secondShot || 0);
         }
+        box.score += (box.thirdShot || 0);
         totalScore = box.score;
 
         bonusType = box.firstShot === 10 ? BonusType.STRIKE : (box.firstShot! + (box.secondShot || 0) === 10 ? BonusType.SPARE : BonusType.REGULAR);
